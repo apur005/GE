@@ -7,10 +7,12 @@
 # All rights reserved - Do Not Redistribute
 
 #Installing updates
-apt_update if node['platform_family'] == 'debian' do
-  action :update
+#apt_update if node['platform_family'] == 'debian' do
+  #action :update
+#end
+execute 'update' do
+  command 'apt-get install update'
 end
-
 #Installing Nodejs latest version
 apt_package 'nodejs' do
   provider                   Chef::Provider::Package::Apt
