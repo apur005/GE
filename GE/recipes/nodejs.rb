@@ -63,6 +63,7 @@ end
 bash 'Configuring Nginx to Proxy Requests' do
 code <<-EOH
 public_ip=`wget -qO- http://instance-data/latest/meta-data/public-ipv4`
+mkdir -p /home/golden-eye/deploy/data/api/goldeneye
 cp /home/ubuntu/golden-eye/deploy/data/api/goldeneye /etc/nginx/sites-available
 sed -i "s/%PUBLIC_IP%/${public_ip}/g" /etc/nginx/sites-available/goldeneye
 ln -s /etc/nginx/sites-available/goldeneye /etc/nginx/sites-enabled
