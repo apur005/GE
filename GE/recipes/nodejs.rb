@@ -34,7 +34,7 @@ end
 
 #Installing npm latest version
 execute 'npm' do
-  command 'apt-get install -y npm
+  command 'apt-get install -y npm'
 end
 
 #Installing virtual env
@@ -88,7 +88,7 @@ export SCRAPY_ENV=prod
 export EDITOR=vim
 source $HOME/venv/bin/activate
 
-" > $HOME/.bash_aliases'
+" > /home/ubutu/.bash_aliases'
 end
 
 execute 'create folder' do
