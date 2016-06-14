@@ -37,9 +37,9 @@ mongoimport --db common --collection users --file common_users.json --drop --sto
 mongoimport --db common --collection currencies --file common_currencies.json --drop --stopOnError --username admin --password M0ngo@1501007 --authenticationDatabase admin
 EOH
 end
+
 bash 'Setting up MongoDB' do
 code <<-EOH
-cd $HOME/golden-eye/deploy/data/db/data
 cd $HOME/golden-eye/deploy/data/db/users
 mongo admin admin.js
 mongo admin reader.js
