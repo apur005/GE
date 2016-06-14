@@ -21,91 +21,6 @@ end
 execute 'update' do
   command 'apt-get update'
 end
-#Installing Nodejs latest version
-execute 'nodejs' do
-  command 'apt-get install -y nodejs'
-end
-#Installing Python latest version
-execute 'python' do
-  command 'apt-get install -y python'
-end
-
-#Installing Pip latest version
-execute 'python-pip' do
-  command 'apt-get install -y python-pip'
-end
-
-#Installing virtual env
-execute 'virtual env' do
-command 'pip install virtualenv' 
-end
-
-#Installing npm latest version
-execute 'npm' do
-  command 'apt-get install -y npm'
-end
-
-#Installing virtual env
-execute 'virtual env' do
-command 'npm install forever -g' 
-end
-
-#Installing scrapy dependencies
-execute 'scrappy dependencies' do
-command 'apt-get install -y build-essential libssl-dev libffi-dev python-dev libxml2-dev libxml2-dev libxslt1-dev sqlite3'
-end
-
-#Installing nginx latest version
-execute 'nginx' do
-  command 'apt-get install -y nginx'
-end
-
-bash 'Configuring Nginx to Proxy Requests' do
-code <<-EOH
-public_ip=`wget -qO- http://instance-data/latest/meta-data/public-ipv4`
-mkdir -p /home/golden-eye/deploy/data/api/goldeneye
-cp /home/ubuntu/golden-eye/deploy/data/api/goldeneye /etc/nginx/sites-available
-sed -i "s/%PUBLIC_IP%/${public_ip}/g" /etc/nginx/sites-available/goldeneye
-ln -s /etc/nginx/sites-available/goldeneye /etc/nginx/sites-enabled
-service nginx restart
-EOH
-end
-
-execute 'env' do
-  cwd '/home/ubuntu/'
-  command 'virtualenv venv'
-  
-end
-
-#%w{golden-eye deploy data}.each do |dir|
-  #directory "/home/ubuntu/#{dir}" do
-    #mode '0755'
-    #owner 'root'
-    #group 'root'
-    #action :create
-    #recursive true
-  #end
-#end
-execute 'pip-dependencies' do
-  command 'pip install Eve==0.6.1 fake-useragent==0.0.8 Flask-Bcrypt==0.7.1 Flask-Login==0.3.2  Flask-WTF==0.12 jmespath==0.9.0 mock==1.3.0 mongomock==3.1.1 nose==1.3.7 peewee==2.7.4 pymongo==2.9.1 python-dateutil==2.4.2 requests==2.9.1 Scrapy==1.0.4 uWSGI==2.0.12 Flask-Compress==1.3.0
- '
-end
-
-file '/home/ubuntu/.bash_aliases' do
-  content 'export SCRAPY_ENV=prod
-            export EDITOR=vim
-            source $HOME/venv/bin/activate'
-            mode '0755'
-            owner 'ubuntu'
-            group 'ubuntu'
-end
-
-
-
-execute 'node dependencies' do
-cwd '/home/ubuntu/golden-eye/ui'
-command 'npm install'
-end
 
 #header "Setting git configurations"
 execute 'git config' do
@@ -247,6 +162,94 @@ cron 'combine rateplans' do
   user 'ubuntu'
   command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/combine_rateplans.py'
 end
+
+#Installing Nodejs latest version
+execute 'nodejs' do
+  command 'apt-get install -y nodejs'
+end
+#Installing Python latest version
+execute 'python' do
+  command 'apt-get install -y python'
+end
+
+#Installing Pip latest version
+execute 'python-pip' do
+  command 'apt-get install -y python-pip'
+end
+
+#Installing virtual env
+execute 'virtual env' do
+command 'pip install virtualenv' 
+end
+
+#Installing npm latest version
+execute 'npm' do
+  command 'apt-get install -y npm'
+end
+
+#Installing virtual env
+execute 'virtual env' do
+command 'npm install forever -g' 
+end
+
+#Installing scrapy dependencies
+execute 'scrappy dependencies' do
+command 'apt-get install -y build-essential libssl-dev libffi-dev python-dev libxml2-dev libxml2-dev libxslt1-dev sqlite3'
+end
+
+#Installing nginx latest version
+execute 'nginx' do
+  command 'apt-get install -y nginx'
+end
+
+bash 'Configuring Nginx to Proxy Requests' do
+code <<-EOH
+public_ip=`wget -qO- http://instance-data/latest/meta-data/public-ipv4`
+mkdir -p /home/golden-eye/deploy/data/api/goldeneye
+cp /home/ubuntu/golden-eye/deploy/data/api/goldeneye /etc/nginx/sites-available
+sed -i "s/%PUBLIC_IP%/${public_ip}/g" /etc/nginx/sites-available/goldeneye
+ln -s /etc/nginx/sites-available/goldeneye /etc/nginx/sites-enabled
+service nginx restart
+EOH
+end
+
+execute 'env' do
+  cwd '/home/ubuntu/'
+  command 'virtualenv venv'
+  
+end
+
+#%w{golden-eye deploy data}.each do |dir|
+  #directory "/home/ubuntu/#{dir}" do
+    #mode '0755'
+    #owner 'root'
+    #group 'root'
+    #action :create
+    #recursive true
+  #end
+#end
+execute 'pip-dependencies' do
+  command 'pip install Eve==0.6.1 fake-useragent==0.0.8 Flask-Bcrypt==0.7.1 Flask-Login==0.3.2  Flask-WTF==0.12 jmespath==0.9.0 mock==1.3.0 mongomock==3.1.1 nose==1.3.7 peewee==2.7.4 pymongo==2.9.1 python-dateutil==2.4.2 requests==2.9.1 Scrapy==1.0.4 uWSGI==2.0.12 Flask-Compress==1.3.0
+ '
+end
+
+file '/home/ubuntu/.bash_aliases' do
+  content 'export SCRAPY_ENV=prod
+            export EDITOR=vim
+            source $HOME/venv/bin/activate'
+            mode '0755'
+            owner 'ubuntu'
+            group 'ubuntu'
+end
+
+
+
+execute 'node dependencies' do
+cwd '/home/ubuntu/golden-eye/ui'
+command 'npm install'
+end
+
+
 
 
 
