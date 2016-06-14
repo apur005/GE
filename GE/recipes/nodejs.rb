@@ -71,9 +71,9 @@ EOH
 end
 
 execute 'env' do
+  cwd '/home/ubuntu/'
   command 'virtualenv venv'
-  action :run
-  environment ({'HOME' => '/home/ubuntu'})
+  
 end
 
 #%w{golden-eye deploy data}.each do |dir|
@@ -102,7 +102,7 @@ end
 
 
 execute 'node dependencies' do
-cwd '/home/unbuntu/golden-eye/ui'
+cwd '/home/ubuntu/golden-eye/ui'
 command 'npm install'
 end
 
