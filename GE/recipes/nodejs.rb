@@ -11,7 +11,7 @@
   #action :update
 #end
 execute 'update' do
-  command 'apt-get install update'
+  command 'apt-get update'
 end
 #Installing Nodejs latest version
 execute 'nodejs' do
