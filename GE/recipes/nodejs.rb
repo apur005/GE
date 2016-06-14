@@ -155,7 +155,7 @@ end
 
 # Combine rateplans
 cron 'combine rateplans' do
-  hour '0-24'
+  hour '0-23'
   minute '00'
   day '*'
   month '*'
