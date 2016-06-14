@@ -10,6 +10,14 @@
 #apt_update if node['platform_family'] == 'debian' do
   #action :update
 #end
+execute 'create folder' do
+command 'mkdir -p /home/ubuntu/golden-eye/deploy/data/'
+end
+
+execute 'create folder' do
+command 'mkdir /home/ubuntu/golden-eye/ui'
+end
+
 execute 'update' do
   command 'apt-get update'
 end
@@ -81,24 +89,17 @@ execute 'pip-dependencies' do
   command 'pip install Eve==0.6.1 fake-useragent==0.0.8 Flask-Bcrypt==0.7.1 Flask-Login==0.3.2  Flask-WTF==0.12 jmespath==0.9.0 mock==1.3.0 mongomock==3.1.1 nose==1.3.7 peewee==2.7.4 pymongo==2.9.1 python-dateutil==2.4.2 requests==2.9.1 Scrapy==1.0.4 uWSGI==2.0.12 Flask-Compress==1.3.0
  '
 end
-execute 'setting up environment variables' do
-command 'echo -e "
-#!/bin/bash
 
-export SCRAPY_ENV=prod
-export EDITOR=vim
-source $HOME/venv/bin/activate
-
-" > /home/ubutu/.bash_aliases'
+file '/home/ubuntu/.bash_aliases' do
+  content 'export SCRAPY_ENV=prod
+            export EDITOR=vim
+            source $HOME/venv/bin/activate'
+            mode '0755'
+            owner 'ubuntu'
+            group 'ubuntu'
 end
 
-execute 'create folder' do
-command 'mkdir -p /home/ubuntu/golden-eye/deploy/data/'
-end
 
-execute 'create folder' do
-command 'mkdir /home/ubuntu/golden-eye/ui'
-end
 
 execute 'node dependencies' do
 cwd '/home/unbuntu/golden-eye/ui'
