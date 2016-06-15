@@ -12,6 +12,14 @@ execute 'update' do
   command 'apt-get update'
 end
 
+execute 'adding repo' do
+  command 'echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
+end
+
+execute 'update' do
+  command 'apt-get update'
+end
+
 execute '"Installing MongoDB"' do
 command 'apt-get install -y mongodb-org=3.0.9 mongodb-org-server=3.0.9 mongodb-org-shell=3.0.9 mongodb-org-mongos=3.0.9 mongodb-org-tools=3.0.9'
 end
@@ -25,8 +33,11 @@ service "mongod" do
 end
 
 bash 'Setting up MongoDB' do
+  user 'ubuntu'
+  tmp '/tmp'
 code <<-EOH
-cd $HOME/golden-eye/deploy/data/db/data
+mkdir -p /home/ubuntu/golden-eye/deploy/data/db/data
+cd /home/ubuntu/golden-eye/deploy/data/db/data
 mongoimport --db clt --collection locations --file clt_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 mongoimport --db tg --collection locations --file tg_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 mongoimport --db ibibo --collection locations --file ibibo_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
@@ -40,7 +51,7 @@ end
 
 bash 'Setting up MongoDB' do
 code <<-EOH
-cd $HOME/golden-eye/deploy/data/db/users
+cd /homeu/buntu/golden-eye/deploy/data/db/users
 mongo admin admin.js
 mongo admin reader.js
 mongo common common.js
