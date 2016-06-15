@@ -11,10 +11,13 @@
 execute 'update' do
   command 'apt-get update'
 end
+execute 'keys' do
+  command 'sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
+end
 
 execute 'adding repo' do
   command 'echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
-end
+  end
 
 execute 'update' do
   command 'apt-get update'
@@ -25,11 +28,7 @@ command 'apt-get install -y mongodb-org=3.0.9 mongodb-org-server=3.0.9 mongodb-o
 end
 
 service "mongod" do
-  action :stop
-end
-
-service "mongod" do
-  action :start
+  action :restart
 end
 
 bash 'Setting up MongoDB' do
