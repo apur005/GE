@@ -43,7 +43,7 @@ cd /home/ubuntu/golden-eye/deploy/data/db/data
 #mongoimport --db common --collection unified_hotels --file common_unified_hotels.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db common --collection users --file common_users.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db common --collection currencies --file common_currencies.json --drop --stopOnError --username admin --password M0ngo@1501007 --authenticationDatabase admin
-#EOH
+EOH
 end
 
 bash 'Setting up MongoDB' do
