@@ -8,11 +8,9 @@
 
 #Installing updates
 
-execute 'update' do
-  command 'apt-get update'
-end
+
 execute 'keys' do
-  command 'sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
+  command 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
 end
 
 execute 'adding repo' do
@@ -23,11 +21,11 @@ execute 'update' do
   command 'apt-get update'
 end
 
-execute '"Installing MongoDB"' do
+execute 'Installing MongoDB' do
 command 'apt-get install -y mongodb-org=3.0.9 mongodb-org-server=3.0.9 mongodb-org-shell=3.0.9 mongodb-org-mongos=3.0.9 mongodb-org-tools=3.0.9'
 end
 
-service "mongod" do
+service 'mongod' do
   action :restart
 end
 
@@ -37,19 +35,20 @@ bash 'Setting up MongoDB' do
 code <<-EOH
 mkdir -p /home/ubuntu/golden-eye/deploy/data/db/data
 cd /home/ubuntu/golden-eye/deploy/data/db/data
-mongoimport --db clt --collection locations --file clt_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db tg --collection locations --file tg_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db ibibo --collection locations --file ibibo_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db booking --collection locations --file booking_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db ex --collection locations --file ex_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db common --collection unified_hotels --file common_unified_hotels.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db common --collection users --file common_users.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-mongoimport --db common --collection currencies --file common_currencies.json --drop --stopOnError --username admin --password M0ngo@1501007 --authenticationDatabase admin
-EOH
+#mongoimport --db clt --collection locations --file clt_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db tg --collection locations --file tg_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db ibibo --collection locations --file ibibo_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db booking --collection locations --file booking_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db ex --collection locations --file ex_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db common --collection unified_hotels --file common_unified_hotels.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db common --collection users --file common_users.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#mongoimport --db common --collection currencies --file common_currencies.json --drop --stopOnError --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#EOH
 end
 
 bash 'Setting up MongoDB' do
 code <<-EOH
+mkdir -p cd /home/ubuntu/golden-eye/deploy/data/db/data/users
 cd /homeu/buntu/golden-eye/deploy/data/db/users
 mongo admin admin.js
 mongo admin reader.js
