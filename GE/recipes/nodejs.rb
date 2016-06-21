@@ -35,152 +35,12 @@ end
 execute 'git config' do
 command 'git config --global merge.conflictstyle diff3'
 end
-# Cleanup script
-cron 'clean up script' do
-  hour '0'
-  minute '0'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/archive_logs.py'
-end
-
-cron 'clean up script' do
-  hour '0'
-  minute '0'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/remove_stats_records_older_than_week.py'
-end
-
-# Spider Config generation
-cron 'spider config1' do
-  hour '0'
-  minute '0'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/spider_configs.py'
-end
-cron 'spider config2' do
-  hour '0'
-  minute '1'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/expedia_taxes_config.py'
-end
-
-# Alerts
-#cron 'alerts1' do
- # hour '0'
-  #minute '0'
-  #day '*'
-  #month '*'
-  #command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/send_alert_if_not_logged_in_for_days.py'
-#end
-cron 'alerts2' do
-  hour '0'
-  minute '0'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/send_alert_for_0_items_once_a_day.py'
-end
-
-cron 'alerts2' do
-  hour '0'
-  minute '02'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py ex taxes'
-end
-# Expedia Taxes Spider
-cron 'Expedia Taxes Spider' do
-  hour '0'
-  minute '02'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py booking'
-end
-# Main Spiders
-cron 'Main Spider1' do
-  hour '0'
-  minute '03'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py booking'
-end
-
-cron 'Main Spider2' do
-  hour '0'
-  minute '04'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py ibibo'
-end
-
-cron 'Main Spider3' do
-  hour '0'
-  minute '05'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command 'home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py ex'
-end
-
-cron 'Main Spider4' do
-  hour '0'
-  minute '06'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py clt'
-end
-
-cron 'Main Spider5' do
-  hour '0'
-  minute '07'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/launch_spiders.py tg'
-end
-
-
-# Combine rateplans
-cron 'combine rateplans' do
-  hour '0-23'
-  minute '00'
-  day '*'
-  month '*'
-  user 'ubuntu'
-  command '/home/ubuntu/venv/bin/python /home/ubuntu/golden-eye/db/automation/combine_rateplans.py'
-end
 
 #Installing Nodejs latest version
 execute 'nodejs' do
   command 'apt-get install -y nodejs'
 end
-#Installing Python latest version
-execute 'python' do
-  command 'apt-get install -y python'
-end
 
-#Installing Pip latest version
-execute 'python-pip' do
-  command 'apt-get install -y python-pip'
-end
-
-#Installing virtual env
-execute 'virtual env' do
-command 'pip install virtualenv' 
-end
 
 #Installing npm latest version
 execute 'npm' do
@@ -192,57 +52,37 @@ execute 'virtual env' do
 command 'npm install forever -g' 
 end
 
-#Installing scrapy dependencies
-execute 'scrappy dependencies' do
-command 'apt-get install -y build-essential libssl-dev libffi-dev python-dev libxml2-dev libxml2-dev libxslt1-dev sqlite3'
-end
-
-#Installing nginx latest version
-execute 'nginx' do
-  command 'apt-get install -y nginx'
-end
-
-bash 'Configuring Nginx to Proxy Requests' do
-code <<-EOH
-public_ip=`wget -qO- http://instance-data/latest/meta-data/public-ipv4`
-mkdir -p /home/golden-eye/deploy/data/api/goldeneye
-cp /home/ubuntu/golden-eye/deploy/data/api/goldeneye /etc/nginx/sites-available
-sed -i "s/%PUBLIC_IP%/${public_ip}/g" /etc/nginx/sites-available/goldeneye
-ln -s /etc/nginx/sites-available/goldeneye /etc/nginx/sites-enabled
-service nginx restart
-EOH
-end
-
-execute 'env' do
-  cwd '/home/ubuntu/'
-  command 'virtualenv venv'
-  
-end
-
-#%w{golden-eye deploy data}.each do |dir|
-  #directory "/home/ubuntu/#{dir}" do
-    #mode '0755'
-    #owner 'root'
-    #group 'root'
-    #action :create
-    #recursive true
-  #end
-#end
-execute 'pip-dependencies' do
-  command 'pip install Eve==0.6.1 fake-useragent==0.0.8 Flask-Bcrypt==0.7.1 Flask-Login==0.3.2  Flask-WTF==0.12 jmespath==0.9.0 mock==1.3.0 mongomock==3.1.1 nose==1.3.7 peewee==2.7.4 pymongo==2.9.1 python-dateutil==2.4.2 requests==2.9.1 Scrapy==1.0.4 uWSGI==2.0.12 Flask-Compress==1.3.0
- '
-end
-
-file '/home/ubuntu/.bash_aliases' do
-  content 'export SCRAPY_ENV=prod
-            export EDITOR=vim
-            source $HOME/venv/bin/activate'
+file '/home/ubuntu/golden-eye/ui/package.json' do
+  content '{
+  "name": "goldeneye",
+  "version": "1.0.7",
+  "description": "An AxisRooms product",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AxisRooms",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.2",
+    "cron": "^1.1.0",
+    "exceljs": "0.2.3",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^5.5.4",
+    "lodash": "^4.11.1",
+    "moment": "^2.13.0",
+    "mongoose": "^4.3.7",
+    "morgan": "^1.6.1",
+    "prompt": "^1.0.0",
+    "request": "^2.69.0"
+  }
+}
+'
             mode '0755'
             owner 'ubuntu'
             group 'ubuntu'
 end
-
-
 
 execute 'node dependencies' do
 cwd '/home/ubuntu/golden-eye/ui'
