@@ -24,7 +24,7 @@ command 'mkdir -p /home/ubuntu/golden-eye/deploy/data/'
 end
 
 execute 'create folder' do
-command 'mkdir /home/ubuntu/golden-eye/ui'
+command 'mkdir -p /home/ubuntu/golden-eye/deploy/data/api/'
 end
 
 execute 'update' do
@@ -202,7 +202,6 @@ end
 bash 'Configuring Nginx to Proxy Requests' do
 code <<-EOH
 public_ip=`wget -qO- http://instance-data/latest/meta-data/public-ipv4`
-mkdir -p /home/golden-eye/deploy/data/api/goldeneye
 cp /home/ubuntu/golden-eye/deploy/data/api/goldeneye /etc/nginx/sites-available
 sed -i "s/%PUBLIC_IP%/${public_ip}/g" /etc/nginx/sites-available/goldeneye
 ln -s /etc/nginx/sites-available/goldeneye /etc/nginx/sites-enabled
@@ -239,10 +238,7 @@ file '/home/ubuntu/.bash_aliases' do
             group 'ubuntu'
 end
 
-execute 'node dependencies' do
-cwd '/home/ubuntu/golden-eye/ui'
-command 'npm install'
-end
+
 
 execute 'keys' do
   command 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
@@ -264,29 +260,28 @@ service 'mongod' do
   action :restart
 end
 
-bash 'Setting up MongoDB' do
-  user 'ubuntu'
-  tmp '/tmp'
-code <<-EOH
-mkdir -p /home/ubuntu/golden-eye/deploy/data/db/data
-cd /home/ubuntu/golden-eye/deploy/data/db/data
-#mongoimport --db clt --collection locations --file clt_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-#mongoimport --db tg --collection locations --file tg_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
-#mongoimport --db ibibo --collection locations --file ibibo_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+#bash 'Setting up MongoDB' do
+ # user 'ubuntu'
+#  tmp '/tmp'
+#code <<-EOH
+#mkdir -p /home/ubuntu/golden-eye/deploy/data/db/data
+#cd /home/ubuntu/golden-eye/deploy/data/db/data
+##mongoimport --db clt --collection locations --file clt_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
+###mongoimport --db ibibo --collection locations --file ibibo_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db booking --collection locations --file booking_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db ex --collection locations --file ex_locations.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db common --collection unified_hotels --file common_unified_hotels.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db common --collection users --file common_users.json --drop --stopOnError -v --username admin --password M0ngo@1501007 --authenticationDatabase admin
 #mongoimport --db common --collection currencies --file common_currencies.json --drop --stopOnError --username admin --password M0ngo@1501007 --authenticationDatabase admin
-EOH
-end
+#EOH
+#end
 
-bash 'Setting up MongoDB' do
-code <<-EOH
-mkdir -p cd /home/ubuntu/golden-eye/deploy/data/db/data/users
-cd /homeu/buntu/golden-eye/deploy/data/db/users
-mongo admin admin.js
-mongo admin reader.js
-mongo common common.js
-EOH
-end
+#bash 'Setting up MongoDB' do
+#code <<-EOH
+#mkdir -p cd /home/ubuntu/golden-eye/deploy/data/db/data/users
+#cd /homeu/buntu/golden-eye/deploy/data/db/users
+#mongo admin admin.js
+#mongo admin reader.js
+#mongo common common.js
+##OH
+#end
