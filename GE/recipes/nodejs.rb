@@ -6,14 +6,6 @@
 #
 # All rights reserved - Do Not Redistribute
 
-#Installing updates
-#apt_update if node['platform_family'] == 'debian' do
-  #action :update
-#end
-execute 'create folder' do
-command 'mkdir -p /home/ubuntu/golden-eye/deploy/data/'
-end
-
 execute 'create folder' do
 command 'mkdir /home/ubuntu/golden-eye/ui'
 end
